@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("testUser")
+@RequestMapping("system")
 public class TestController {
     @Autowired
     UserMapper userMapper;

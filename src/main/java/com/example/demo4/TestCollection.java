@@ -11,4 +11,8 @@ public class TestCollection {
     public String getValue(){
         return "hello world";
     }
+    @RequestMapping("index")
+    public String getIndex(){
+        return "index";
+    }
 }
