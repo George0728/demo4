@@ -1,11 +1,11 @@
 server:
   port: 10086
 servlet:
-  context-path: /  #????????
+  context-path: /  #设置服务的根路径
 
 spring:
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource # ??druid???
+    type: com.alibaba.druid.pool.DruidDataSource # 连接池类型
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/website?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
@@ -15,7 +15,7 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #???? ???????SQL
-  #xml??????????xml???????
+  # mapper文件所在位置，注意，如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml  如果是放在resource目录 classpath:/mapper/*Mapper.xml
   mapper-locations: classpath*:/mapper/**/*.xml
-  #???????package?????????
+  # 实体所在位置
   typeAliasesPackage: com.example.demo4.system.entity

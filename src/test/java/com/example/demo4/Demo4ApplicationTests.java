@@ -18,11 +18,11 @@ import java.util.List;
 @SpringBootTest
 class Demo4ApplicationTests {
 
-//    {
-//
-//        @Autowired
-//        MenuTreeService menuTreeService;
-//
+
+
+        @Autowired
+        MenuTreeService menuTreeService;
+
 //        /**
 //         * 初始处理已有节点数据，目前只有两层
 //         */
@@ -1066,7 +1066,6 @@ class Demo4ApplicationTests {
 //            menuTree.setVisible(false);
 //            menuTree.setUrl(item.getUrl());
 //            menuTree.setParentId(0L);
-//            menuTree.setId((long) (i+1));
 //            menuTreeService.save(menuTree);
 //            if (CollectionUtil.isNotEmpty(item.getChildren())){
 //                List<Children> children = item.getChildren();
@@ -1084,28 +1083,28 @@ class Demo4ApplicationTests {
 //            }
 //        }
 //    }
-//
-//        @Test
-//        public void testnodes(){
-//        List<Long> ids = new ArrayList<>();
-//        long parentId = 0L;
-//        ids.add(parentId);
-//        getAllChildrenNodeIdsByParentId(ids, parentId);
-//        System.out.println(ids);
-//    }
-//
-//        public void getAllChildrenNodeIdsByParentId(List<Long> ids,long id){
-//        QueryWrapper<MenuTree> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("parent_id",id);
-//        List<MenuTree> list = menuTreeService.list(queryWrapper);
-//        if(CollectionUtil.isNotEmpty(list)){
-//            for(MenuTree item : list){
-//                ids.add(item.getId());
-//                getAllChildrenNodeIdsByParentId(ids, item.getId());
-//            }
-//        }
-//
-//    }
-//
-//    }
+
+        @Test
+        public void testnodes(){
+        List<Long> ids = new ArrayList<>();
+        long parentId = 0L;
+        ids.add(parentId);
+        getAllChildrenNodeIdsByParentId(ids, parentId);
+        System.out.println(ids);
+    }
+
+        public void getAllChildrenNodeIdsByParentId(List<Long> ids,long id){
+        QueryWrapper<MenuTree> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("parent_id",id);
+        List<MenuTree> list = menuTreeService.list(queryWrapper);
+        if(CollectionUtil.isNotEmpty(list)){
+            for(MenuTree item : list){
+                ids.add(item.getId());
+                getAllChildrenNodeIdsByParentId(ids, item.getId());
+            }
+        }
+
+    }
+
+
 }
