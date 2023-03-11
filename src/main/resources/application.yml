@@ -4,6 +4,13 @@ servlet:
   context-path: /  #设置服务的根路径
 
 spring:
+  thymeleaf:
+    cache: false
+#    mode: LEGACYHTML5  #非严格模式
+#    prefix: /WEB-INF/ #默认 classpath:/templates/
+#    suffix: .html
+#    servlet:
+#      content-type: text/html
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource # 连接池类型
     driver-class-name: com.mysql.jdbc.Driver

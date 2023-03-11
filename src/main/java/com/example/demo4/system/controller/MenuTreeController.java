@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.demo4.system.entity.MenuTree;
 import com.example.demo4.system.entity.SearchEngine;
@@ -79,7 +80,9 @@ public class MenuTreeController {
      * @return
      */
     @RequestMapping(value = "/drag-drop",method = RequestMethod.GET)
-    public AjaxResult updateDraggingData(@RequestParam("dropType") String dropType, @RequestParam("dragDataId") Long dragDataId, @RequestParam("dropDataId") Long dropDataId){
+    public AjaxResult updateDraggingData(@RequestParam("dropType") String dropType,
+                                         @RequestParam("dragDataId") Long dragDataId,
+                                         @RequestParam("dropDataId") Long dropDataId){
         try {
             MenuTree dragMenuTree = menuTreeService.getById(dragDataId);
             Long dragParentId = dragMenuTree.getParentId(); //被拖拽节点的父节点id
@@ -89,9 +92,14 @@ public class MenuTreeController {
             //拖拽到其它子节点
             if("inner".equals(dropType)){
                 //更新节点序号
-                QueryWrapper queryWrapper = Wrappers.query().gt(MenuTree.ORDER_NUMBER, dropDataId).eq(MenuTree.PARENT_ID,dropDataId).orderByDesc(MenuTree.ORDER_NUMBER);
+                QueryWrapper queryWrapper = Wrappers.query()
+                        .eq(MenuTree.PARENT_ID,dropDataId)
+                        .orderByDesc(MenuTree.ORDER_NUMBER);
                 List<MenuTree> list = menuTreeService.list(queryWrapper);
-                Integer orderNumber = list.get(0).getOrderNumber();
+                Integer orderNumber = 0;
+                if (CollectionUtils.isNotEmpty(list)) {
+                    orderNumber = list.get(0).getOrderNumber();
+                }
                 dragMenuTree.setParentId(dropDataId);
                 dragMenuTree.setOrderNumber(orderNumber+1);
                 menuTreeService.updateById(dragMenuTree);
@@ -110,8 +118,11 @@ public class MenuTreeController {
                 menuTreeService.updateById(dropMenuTree);
 
             }
-            //region 不管是何种拖拽方式（inner before），都要对节点进行重新排序
-            QueryWrapper queryWrapper = Wrappers.query().gt(MenuTree.ORDER_NUMBER, dropNodeOrderNumber).eq(MenuTree.PARENT_ID,dropMenuTree.getParentId()).orderByAsc(MenuTree.ORDER_NUMBER);
+            //region 同级进行拖拽时,需要知道目标节点排列序号,将拖拽节点的序号设置为目标节点,并且将目标节点及其后的同级节点逐个加1.
+            QueryWrapper queryWrapper = Wrappers.query()
+                    .gt(MenuTree.ORDER_NUMBER, dropNodeOrderNumber)
+                    .eq(MenuTree.PARENT_ID,dropMenuTree.getParentId())
+                    .orderByAsc(MenuTree.ORDER_NUMBER);
             List<MenuTree> list = menuTreeService.list(queryWrapper);
             for(int i = 0; i < list.size(); i++){
                 MenuTree menuTree = list.get(i);
