@@ -27,6 +27,8 @@ public class SearchEngine implements Serializable {
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
 
+    private String engineName;
+
     @ApiModelProperty(value = "搜索链接")
     private String searchUrl;
 
@@ -43,6 +45,10 @@ public class SearchEngine implements Serializable {
     private String remark;
 
     private Integer status;
+
+    private String suggestUrl;
+
+    private String suggestCallback;
 
     /**
      * 排序
